@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #0b2b26;
+  }
+  .slide {
+    width: 13.333in;
+    height: 7.5in;
+    page-break-after: always;
+    padding: 0.75in 1in;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide:last-child { page-break-after: auto; }
+
+  .slide.dark {
+    background: #001e2b;
+    color: #ffffff;
+  }
+  .slide.light {
+    background: #ffffff;
+    color: #0b2b26;
+  }
+
+  .accent { color: #00ed64; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 15px;
+    font-weight: 700;
+    color: #00ed64;
+    margin-bottom: 18px;
+  }
+  .dark .eyebrow { color: #00ed64; }
+  .light .eyebrow { color: #00684a; }
+
+  h1 {
+    font-size: 46px;
+    line-height: 1.15;
+    margin: 0 0 10px 0;
+  }
+  h2 {
+    font-size: 34px;
+    margin: 0 0 30px 0;
+  }
+  .subtitle {
+    font-size: 20px;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  ul.points {
+    font-size: 22px;
+    line-height: 1.6;
+    padding-left: 28px;
+    margin: 0;
+  }
+  ul.points li { margin-bottom: 14px; }
+  ul.points li b { color: #00684a; }
+  .dark ul.points li b { color: #00ed64; }
+
+  .center-stack {
+    position: absolute;
+    top: 50%;
+    left: 1in;
+    right: 1in;
+    transform: translateY(-50%);
+  }
+
+  .quote {
+    font-size: 26px;
+    font-style: italic;
+    line-height: 1.5;
+    border-left: 5px solid #00ed64;
+    padding-left: 24px;
+    margin: 26px 0;
+  }
+  .cite {
+    font-size: 15px;
+    opacity: 0.7;
+  }
+
+  table.roadmap {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+  }
+  table.roadmap th {
+    text-align: left;
+    color: #00684a;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid #00684a;
+    padding: 8px 12px 10px 0;
+  }
+  table.roadmap td {
+    padding: 16px 12px 16px 0;
+    border-bottom: 1px solid #d8e6e0;
+    vertical-align: top;
+  }
+  table.roadmap td.num {
+    font-weight: 700;
+    color: #00684a;
+    font-size: 20px;
+    width: 50px;
+  }
+  table.roadmap td.file {
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    color: #444;
+    width: 220px;
+  }
+
+  .footer-tag {
+    position: absolute;
+    bottom: 0.5in;
+    left: 1in;
+    right: 1in;
+    font-size: 14px;
+    opacity: 0.6;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 34px;
+  }
+  .badge {
+    background: rgba(0,237,100,0.12);
+    border: 1px solid #00ed64;
+    color: #00ed64;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .two-col {
+    display: flex;
+    gap: 60px;
+    margin-top: 20px;
+  }
+  .two-col > div { flex: 1; }
+  .col-label {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .col-label.old { color: #8a8a8a; }
+  .col-label.new { color: #00684a; }
+
+  code.inline {
+    background: #f1f6f4;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 17px;
+    font-family: "Courier New", monospace;
+    color: #00684a;
+  }
+</style>
+</head>
+<body>
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide dark">
+    <div class="center-stack">
+      <div class="eyebrow">NextGen Python Internship MX &middot; Q2 2026 &middot; Stage 2</div>
+      <h1>Workshop NoSQL DB<br><span class="accent">MongoDB</span></h1>
+      <p class="subtitle">Case study: how Forbes rebuilt their CMS on MongoDB</p>
+      <div class="badge-row">
+        <div class="badge">Follow-along session</div>
+        <div class="badge">Hands-on, all levels welcome</div>
+      </div>
+    </div>
+    <div class="footer-tag">
+      <span>Stage 2 &middot; Workshop 1 of 2</span>
+      <span>github.com/agent3dev/workshop-nosql-stage2-mongodb</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: FROM SQL TO DOCUMENTS -->
+  <div class="slide light">
+    <div class="eyebrow">From Stage 1 to Stage 2</div>
+    <h2>Same skills, a different mental model</h2>
+    <div class="two-col">
+      <div>
+        <div class="col-label old">Stage 1 &middot; PostgreSQL</div>
+        <ul class="points">
+          <li>Rows in fixed-column <b>tables</b></li>
+          <li>Schema changes need a <b>migration</b></li>
+          <li>Relationships resolved with <b>JOINs</b></li>
+          <li>One shape per table, always</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-label new">Stage 2 &middot; MongoDB</div>
+        <ul class="points">
+          <li><b>Documents</b> in flexible collections</li>
+          <li>New shapes need <b>zero migration</b></li>
+          <li>Relationships: <b>embed</b> or <b>reference</b></li>
+          <li>Different shapes, same collection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: THE REAL PROBLEM -->
+  <div class="slide light">
+    <div class="eyebrow">The real problem &middot; Forbes, 2011</div>
+    <h2>Why a magazine rewrote its entire CMS</h2>
+    <ul class="points">
+      <li>Forbes needed to publish <b>articles, videos, slideshows, and sponsored posts</b> &mdash; each shaped completely differently</li>
+      <li>A relational schema meant either one giant table full of NULLs, or a new migration for every new content type</li>
+      <li>They rebuilt the CMS on MongoDB and shipped it in <b>2 months</b></li>
+    </ul>
+    <div class="quote">
+      &ldquo;MongoDB&rsquo;s document model meant developers could build new features quickly, easily incorporate changes, and better handle a growing diversity of data types.&rdquo;
+    </div>
+    <div class="cite">&mdash; MongoDB customer case study: mongodb.com/solutions/customer-case-studies/forbes</div>
+  </div>
+
+  <!-- SLIDE 4: TODAY'S ROADMAP -->
+  <div class="slide light">
+    <div class="eyebrow">Today, we rebuild it</div>
+    <h2>Curriculum roadmap</h2>
+    <table class="roadmap">
+      <tr><th>#</th><th>File</th><th>Topic</th><th>The Forbes need it answers</th></tr>
+      <tr>
+        <td class="num">01</td>
+        <td class="file">01_crud.js</td>
+        <td>CRUD basics</td>
+        <td>Get comfortable reading/writing documents first</td>
+      </tr>
+      <tr>
+        <td class="num">02</td>
+        <td class="file">02_schema_design.js</td>
+        <td>Schema design</td>
+        <td>4 content types, 1 collection, no migrations &mdash; the actual reason Forbes chose Mongo</td>
+      </tr>
+      <tr>
+        <td class="num">03</td>
+        <td class="file">03_aggregation.js</td>
+        <td>Aggregation</td>
+        <td>&ldquo;Real-time insight into social sharing&rdquo; &mdash; Forbes&rsquo; own words</td>
+      </tr>
+      <tr>
+        <td class="num">04</td>
+        <td class="file">04_indexes.js</td>
+        <td>Indexes</td>
+        <td>Serving ~121M monthly users without a collection scan</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SLIDE 5: HOW THIS SESSION WORKS -->
+  <div class="slide light">
+    <div class="eyebrow">Format</div>
+    <h2>How today works</h2>
+    <ul class="points">
+      <li>This is a <b>follow-along-with-teacher</b> session, not a self-paced tutorial</li>
+      <li>Some of you will type every command with me &mdash; others will watch and jump in on the open challenges. <b>Both are fine.</b></li>
+      <li>Each file ends with take-home challenges &mdash; we may not finish everything live, and that's expected</li>
+      <li>Ask questions any time &mdash; we'll pause</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 6: BEFORE WE START -->
+  <div class="slide dark">
+    <div class="eyebrow">Before we start</div>
+    <h2>Get the stack running</h2>
+    <ul class="points">
+      <li><code class="inline">git clone github.com/agent3dev/workshop-nosql-stage2-mongodb</code></li>
+      <li><code class="inline">docker compose up -d</code></li>
+      <li>Visual UI: <b>mongo-express</b> at <code class="inline">localhost:8081</code></li>
+      <li>Or terminal: <code class="inline">docker exec -it forbes_mongo mongosh ...</code></li>
+    </ul>
+    <div class="footer-tag">
+      <span>Full setup steps are in the repo README</span>
+      <span></span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: CLOSING -->
+  <div class="slide dark">
+    <div class="center-stack">
+      <div class="eyebrow">Let's build</div>
+      <h1>Rebuilding <span class="accent">Forbes&rsquo; CMS</span>,<br>one exercise at a time</h1>
+      <p class="subtitle">github.com/agent3dev/workshop-nosql-stage2-mongodb</p>
+    </div>
+  </div>
+
+</body>
+</html>
