@@ -24,6 +24,16 @@ db.articles.findOne({ type: 'video' });      // has video_url, duration_seconds
 db.articles.findOne({ type: 'slideshow' });  // has slides: [...]
 db.articles.findOne({ type: 'sponsored' });  // has sponsor: {...}
 
+// Notice what DOESN'T change across all four shapes: every single one
+// has a `slug`. Forbes' real case study describes building a "Content
+// API" that provides "a stable API on top of the more fluid data
+// structures hosted within MongoDB." `slug` is that idea in miniature --
+// one stable, human-readable identifier every document guarantees,
+// which is exactly what lets everything else about the document (its
+// fields, its type, its shape) vary freely underneath it. The schema
+// isn't "no design" -- the design is choosing what stays fixed (slug)
+// versus what's allowed to differ (everything else).
+
 // Question for the class: sketch what a Postgres `articles` table would
 // need to look like to support all four types with plain columns.
 // How many of those columns would be NULL for any given row?
