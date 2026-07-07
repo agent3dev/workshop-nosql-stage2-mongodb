@@ -169,6 +169,70 @@
     font-family: "Courier New", monospace;
     color: #00684a;
   }
+
+  ul.checklist { list-style: none; padding-left: 0; }
+  ul.checklist li {
+    position: relative;
+    padding-left: 38px;
+  }
+  ul.checklist li:before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #00684a;
+    font-weight: 700;
+    font-size: 22px;
+  }
+
+  .verdict {
+    margin-top: 26px;
+    background: rgba(0,237,100,0.10);
+    border: 1px solid #00684a;
+    border-radius: 10px;
+    padding: 16px 22px;
+    font-size: 19px;
+    font-weight: 600;
+    color: #00512f;
+  }
+
+  .split {
+    display: flex;
+    gap: 44px;
+    margin-top: 22px;
+    align-items: flex-start;
+  }
+  .split .split-left { flex: 0 0 44%; }
+  .split .split-right { flex: 1; padding-top: 2px; }
+  .split ul.points { font-size: 19px; }
+  .split ul.points li { margin-bottom: 16px; }
+
+  .code-card {
+    background: #001e2b;
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #d8f5e4;
+  }
+  .code-card .tag {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    background: #00ed64;
+    color: #001e2b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .code-card .hl { color: #5eeaa0; font-weight: 700; }
+  .code-card .cm { color: #7a9a8f; font-style: italic; }
+  .code-card .bad { color: #ff8383; }
+  .code-card .ok { color: #7ee2a8; }
 </style>
 </head>
 <body>
@@ -214,6 +278,7 @@
         </ul>
       </div>
     </div>
+    <div class="verdict">Flexible by design, so you can ship new shapes fast.</div>
   </div>
 
   <!-- SLIDE 3: THE REAL PROBLEM -->
@@ -264,67 +329,200 @@
     </table>
   </div>
 
-  <!-- SLIDE 5: FILE 1 -->
+  <!-- SLIDE 5: WHEN TO ACTUALLY PITCH IT -->
+  <div class="slide light">
+    <div class="eyebrow">Beyond today's session</div>
+    <h2>Pitching MongoDB to a real project</h2>
+    <ul class="points" style="margin-bottom: 10px;">
+      <li>Not "just store JSON" &mdash; a bet that your data shapes are still evolving, and you want to ship without a migration cycle every time</li>
+    </ul>
+    <ul class="points checklist">
+      <li><b>Content shapes that vary by type</b> or change often &mdash; articles vs. videos, product categories with different attributes each</li>
+      <li><b>Nested, hierarchical data</b> that's naturally read together &mdash; an order and its line items, a user and their preferences</li>
+      <li><b>Real aggregation/analytics needs</b> on that data, not just simple lookups</li>
+      <li><b>A team iterating fast</b> &mdash; shipping new fields weekly, that can't wait on a schema migration</li>
+    </ul>
+    <div class="verdict">Mostly rigid, well-known entities with heavy cross-table reporting? Plain SQL is still the simpler choice.</div>
+  </div>
+
+  <!-- SLIDE 6: BEYOND FORBES -->
+  <div class="slide light">
+    <div class="eyebrow">Beyond today's session</div>
+    <h2>Who else runs on this exact pattern</h2>
+    <ul class="points">
+      <li><b>Forbes</b> &mdash; 4 content types in 1 collection, no migrations, shipped in 2 months (today's whole case study)</li>
+      <li><b>Cisco</b> &mdash; migrated a $40B/year eCommerce platform off a relational database: <b>5x lower latency</b>, <b>100x better availability</b></li>
+      <li><b>Toyota Connected</b> &mdash; vehicle telematics platform on MongoDB Atlas, targeting 99.99%+ uptime</li>
+      <li><b>eBay</b> &mdash; product catalog &amp; search metadata across 1.4 billion active listings, 190 markets</li>
+    </ul>
+    <div class="cite">Sources: MongoDB customer case studies (mongodb.com/solutions/customer-case-studies) &mdash; Cisco, Toyota Connected, eBay</div>
+  </div>
+
+  <!-- SLIDE 7: WHAT MONGODB IS NOT -->
+  <div class="slide light">
+    <div class="eyebrow">Common misconceptions</div>
+    <h2>What MongoDB is NOT</h2>
+    <ul class="points">
+      <li><b>Not schema-less.</b> It's schema-<i>flexible</i> &mdash; you can (and often should) enforce structure with <code class="inline">$jsonSchema</code> validation, like Exercise 2's Part C. "Flexible" means the rules are optional and per-collection, not that there are no rules.</li>
+      <li><b>Not transaction-free.</b> Unlike Cassandra (this program's other NoSQL workshop), MongoDB supports real multi-document ACID transactions &mdash; since version 4.0 for a single replica set, and 4.2 across sharded clusters. The honest tradeoff: reaching for them constantly is usually a sign your schema should be embedding more, not less &mdash; transactions carry a real performance cost.</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 8: HOW MONGODB COMPARES -->
+  <div class="slide light">
+    <div class="eyebrow">Beyond today's session</div>
+    <h2>How MongoDB compares</h2>
+    <table class="roadmap">
+      <tr><th>System</th><th>Schema model</th><th>Transactions</th><th>Best for</th></tr>
+      <tr>
+        <td class="file">MongoDB</td>
+        <td>Flexible documents, schema optional</td>
+        <td>Multi-doc ACID (since v4.0 / v4.2)</td>
+        <td>Evolving content shapes, nested data, fast iteration</td>
+      </tr>
+      <tr>
+        <td class="file">PostgreSQL + JSONB</td>
+        <td>Relational, JSON columns bolted on</td>
+        <td>Full ACID</td>
+        <td>Adding flexible fields to an otherwise relational app</td>
+      </tr>
+      <tr>
+        <td class="file">DynamoDB</td>
+        <td>Key-value, fully managed</td>
+        <td>Limited, constrained multi-item</td>
+        <td>Massive scale, zero operations, simple key access</td>
+      </tr>
+      <tr>
+        <td class="file">Cassandra</td>
+        <td>Wide-column, no leader</td>
+        <td>No cross-partition transactions</td>
+        <td>Extreme write throughput, no single point of failure</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SLIDE 9: FILE 1 -->
   <div class="slide light">
     <div class="eyebrow">File 1 of 4 &middot; 01_crud.js</div>
     <h2>CRUD basics</h2>
-    <ul class="points">
-      <li>Read: <code class="inline">find()</code>, <code class="inline">findOne()</code>, filters, sort, limit, count</li>
-      <li>Write: <code class="inline">insertOne</code> / <code class="inline">insertMany</code>, then <code class="inline">updateOne</code> with <code class="inline">$set</code>, <code class="inline">$push</code>, <code class="inline">$inc</code></li>
-      <li>No JOIN: resolve <code class="inline">author_id</code> yourself, query inside an embedded array</li>
+    <div class="split">
+      <div class="split-left">
+        <ul class="points">
+          <li>Read: <code class="inline">find()</code> / <code class="inline">findOne()</code>, filters, sort, limit, count</li>
+          <li>Write: <code class="inline">insertOne</code> / <code class="inline">insertMany</code> &mdash; updates use operators, not plain assignment</li>
+          <li>No JOIN: resolve <code class="inline">author_id</code> yourself</li>
+        </ul>
+      </div>
+      <div class="split-right">
+        <div class="code-card">
+          <span class="tag">JS</span><br>
+          db.articles.updateOne(<br>
+          &nbsp;&nbsp;{ slug: 'x' },<br>
+          &nbsp;&nbsp;{ <span class="hl">$push</span>: { comments: {...} } }<br>
+          );<br>
+          <span class="cm">// operators, not plain assignment</span>
+        </div>
+      </div>
+    </div>
+    <ul class="points" style="margin-top: 18px;">
       <li>Goal isn't the syntax &mdash; it's getting comfortable before Exercise 2's real payoff</li>
     </ul>
   </div>
 
-  <!-- SLIDE 6: FILE 2 -->
+  <!-- SLIDE 10: FILE 2 -->
   <div class="slide light">
     <div class="eyebrow">File 2 of 4 &middot; 02_schema_design.js</div>
     <h2>Schema design: embed vs. reference</h2>
-    <ul class="points">
-      <li>Same collection, four shapes &mdash; article, video, slideshow, sponsored &mdash; <b>zero migrations</b></li>
-      <li><b>Embed</b> comments (bounded, always read with the article) vs. <b>reference</b> authors (one author, thousands of articles)</li>
-      <li><code class="inline">slug</code> is the one field every shape keeps fixed &mdash; Forbes' own "stable API on fluid data" idea, in miniature</li>
+    <div class="split">
+      <div class="split-left">
+        <ul class="points">
+          <li>Same collection, four shapes &mdash; <b>zero migrations</b></li>
+          <li><b>Embed</b> comments vs. <b>reference</b> authors (one author, thousands of articles)</li>
+          <li><code class="inline">slug</code> is the one field every shape keeps fixed</li>
+        </ul>
+      </div>
+      <div class="split-right">
+        <div class="code-card">
+          <span class="tag">JS</span><br>
+          db.articles.aggregate([<br>
+          &nbsp;&nbsp;{ <span class="hl">$lookup</span>: {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;from: 'authors',<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;localField: 'author_id',<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;foreignField: '_id',<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;as: 'author' } },<br>
+          &nbsp;&nbsp;{ $unwind: '$author' }<br>
+          ]);<br>
+          <span class="cm">// the closest thing to a JOIN</span>
+        </div>
+      </div>
+    </div>
+    <ul class="points" style="margin-top: 18px;">
       <li><code class="inline">$jsonSchema</code> validation: MongoDB is schema-<b>flexible</b>, not schema-less</li>
     </ul>
   </div>
 
-  <!-- SLIDE 7: FILE 3 -->
+  <!-- SLIDE 11: FILE 3 -->
   <div class="slide light">
     <div class="eyebrow">File 3 of 4 &middot; 03_aggregation.js</div>
     <h2>Aggregation pipelines</h2>
-    <ul class="points">
-      <li><code class="inline">find()</code> can't compute "average shares per tag" &mdash; that needs <code class="inline">$group</code></li>
-      <li>Top articles by shares, engagement by content type, author stats via <code class="inline">$lookup</code></li>
+    <div class="split">
+      <div class="split-left">
+        <ul class="points">
+          <li><code class="inline">find()</code> can't compute "average shares per tag" &mdash; needs <code class="inline">$group</code></li>
+          <li>A pipeline is an <b>array of stages</b> &mdash; order matters, each stage feeds the next</li>
+          <li>This is Forbes' own words: <b>"real-time insight into social sharing"</b></li>
+        </ul>
+      </div>
+      <div class="split-right">
+        <div class="code-card">
+          <span class="tag">JS</span><br>
+          db.articles.aggregate([<br>
+          &nbsp;&nbsp;{ $unwind: '$tags' },<br>
+          &nbsp;&nbsp;{ $group: {<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="hl">_id: '$tags'</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;avg_shares: { $avg: '$stats.shares' }<br>
+          &nbsp;&nbsp;} }<br>
+          ]);<br>
+          <span class="hl">// _id here = grouping key, NOT doc _id</span>
+        </div>
+      </div>
+    </div>
+    <ul class="points" style="margin-top: 18px;">
       <li>Comment-level analysis with <code class="inline">$unwind</code> and <code class="inline">$size</code></li>
-      <li>This is Forbes' own words: <b>"real-time insight into social sharing"</b></li>
     </ul>
   </div>
 
-  <!-- SLIDE 8: FILE 4 -->
+  <!-- SLIDE 12: FILE 4 -->
   <div class="slide light">
     <div class="eyebrow">File 4 of 4 &middot; 04_indexes.js</div>
     <h2>Indexes</h2>
-    <ul class="points">
-      <li><code class="inline">explain()</code> first &mdash; see <b>COLLSCAN</b> become <b>IXSCAN</b></li>
-      <li>Unique index on <code class="inline">slug</code> &mdash; two articles can never collide on a URL</li>
-      <li>Compound index <code class="inline">(type, published_at)</code> &mdash; matches the real "latest by type" query</li>
+    <div class="split">
+      <div class="split-left">
+        <ul class="points">
+          <li><code class="inline">explain()</code> first &mdash; see <b>COLLSCAN</b> become <b>IXSCAN</b></li>
+          <li>Unique index on <code class="inline">slug</code> &mdash; two articles can never collide on a URL</li>
+          <li>Compound index <code class="inline">(type, published_at)</code> matches the real query</li>
+        </ul>
+      </div>
+      <div class="split-right">
+        <div class="code-card">
+          <span class="tag">JS</span><br>
+          db.articles.createIndex(<br>
+          &nbsp;&nbsp;{ slug: 1 }, { <span class="hl">unique: true</span> }<br>
+          );<br>
+          <br>
+          db.articles.find({ slug: 'x' })<br>
+          &nbsp;&nbsp;.explain('executionStats');<br>
+          <span class="ok">// stage: "COLLSCAN" -&gt; "IXSCAN"</span>
+        </div>
+      </div>
+    </div>
+    <ul class="points" style="margin-top: 18px;">
       <li>Text index for on-site search, with a relevance score</li>
     </ul>
   </div>
 
-  <!-- SLIDE 9: HOW THIS SESSION WORKS -->
-  <div class="slide light">
-    <div class="eyebrow">Format</div>
-    <h2>How today works</h2>
-    <ul class="points">
-      <li>This is a <b>follow-along-with-teacher</b> session, not a self-paced tutorial</li>
-      <li>Some of you will type every command with me &mdash; others will watch and jump in on the open challenges. <b>Both are fine.</b></li>
-      <li>Each file ends with take-home challenges &mdash; we may not finish everything live, and that's expected</li>
-      <li>Ask questions any time &mdash; we'll pause</li>
-    </ul>
-  </div>
-
-  <!-- SLIDE 10: BEFORE WE START -->
+  <!-- SLIDE 13: BEFORE WE START -->
   <div class="slide dark">
     <div class="eyebrow">Before we start</div>
     <h2>Get the stack running</h2>
@@ -340,14 +538,6 @@
     </div>
   </div>
 
-  <!-- SLIDE 11: CLOSING -->
-  <div class="slide dark">
-    <div class="center-stack">
-      <div class="eyebrow">Let's build</div>
-      <h1>Rebuilding <span class="accent">Forbes&rsquo; CMS</span>,<br>one exercise at a time</h1>
-      <p class="subtitle">github.com/agent3dev/workshop-nosql-stage2-mongodb</p>
-    </div>
-  </div>
 
 </body>
 </html>
