@@ -264,7 +264,55 @@
     </table>
   </div>
 
-  <!-- SLIDE 5: HOW THIS SESSION WORKS -->
+  <!-- SLIDE 5: FILE 1 -->
+  <div class="slide light">
+    <div class="eyebrow">File 1 of 4 &middot; 01_crud.js</div>
+    <h2>CRUD basics</h2>
+    <ul class="points">
+      <li>Read: <code class="inline">find()</code>, <code class="inline">findOne()</code>, filters, sort, limit, count</li>
+      <li>Write: <code class="inline">insertOne</code> / <code class="inline">insertMany</code>, then <code class="inline">updateOne</code> with <code class="inline">$set</code>, <code class="inline">$push</code>, <code class="inline">$inc</code></li>
+      <li>No JOIN: resolve <code class="inline">author_id</code> yourself, query inside an embedded array</li>
+      <li>Goal isn't the syntax &mdash; it's getting comfortable before Exercise 2's real payoff</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 6: FILE 2 -->
+  <div class="slide light">
+    <div class="eyebrow">File 2 of 4 &middot; 02_schema_design.js</div>
+    <h2>Schema design: embed vs. reference</h2>
+    <ul class="points">
+      <li>Same collection, four shapes &mdash; article, video, slideshow, sponsored &mdash; <b>zero migrations</b></li>
+      <li><b>Embed</b> comments (bounded, always read with the article) vs. <b>reference</b> authors (one author, thousands of articles)</li>
+      <li><code class="inline">slug</code> is the one field every shape keeps fixed &mdash; Forbes' own "stable API on fluid data" idea, in miniature</li>
+      <li><code class="inline">$jsonSchema</code> validation: MongoDB is schema-<b>flexible</b>, not schema-less</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 7: FILE 3 -->
+  <div class="slide light">
+    <div class="eyebrow">File 3 of 4 &middot; 03_aggregation.js</div>
+    <h2>Aggregation pipelines</h2>
+    <ul class="points">
+      <li><code class="inline">find()</code> can't compute "average shares per tag" &mdash; that needs <code class="inline">$group</code></li>
+      <li>Top articles by shares, engagement by content type, author stats via <code class="inline">$lookup</code></li>
+      <li>Comment-level analysis with <code class="inline">$unwind</code> and <code class="inline">$size</code></li>
+      <li>This is Forbes' own words: <b>"real-time insight into social sharing"</b></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 8: FILE 4 -->
+  <div class="slide light">
+    <div class="eyebrow">File 4 of 4 &middot; 04_indexes.js</div>
+    <h2>Indexes</h2>
+    <ul class="points">
+      <li><code class="inline">explain()</code> first &mdash; see <b>COLLSCAN</b> become <b>IXSCAN</b></li>
+      <li>Unique index on <code class="inline">slug</code> &mdash; two articles can never collide on a URL</li>
+      <li>Compound index <code class="inline">(type, published_at)</code> &mdash; matches the real "latest by type" query</li>
+      <li>Text index for on-site search, with a relevance score</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 9: HOW THIS SESSION WORKS -->
   <div class="slide light">
     <div class="eyebrow">Format</div>
     <h2>How today works</h2>
@@ -276,7 +324,7 @@
     </ul>
   </div>
 
-  <!-- SLIDE 6: BEFORE WE START -->
+  <!-- SLIDE 10: BEFORE WE START -->
   <div class="slide dark">
     <div class="eyebrow">Before we start</div>
     <h2>Get the stack running</h2>
@@ -292,7 +340,7 @@
     </div>
   </div>
 
-  <!-- SLIDE 7: CLOSING -->
+  <!-- SLIDE 11: CLOSING -->
   <div class="slide dark">
     <div class="center-stack">
       <div class="eyebrow">Let's build</div>
